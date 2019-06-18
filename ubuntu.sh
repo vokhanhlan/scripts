@@ -1,3 +1,42 @@
+#!/bin/bash
+low_ram='512144'
+
+apt -y install gawk bc wget lsof
+
+cpu_name=$( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo)
+cpu_cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo)
+cpu_freq=$( awk -F: ' /cpu MHz/ {freq=$2} END {print freq}' /proc/cpuinfo)
+server_ram_total=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+server_ram_mb=`echo "scale=0;$server_ram_total/1024" | bc`
+server_hdd=$( df -h | awk 'NR==2 {print $2}' )
+server_swap_total=$(awk '/SwapTotal/ {print $2}' /proc/meminfo)
+server_swap_mb=`echo "scale=0;$server_swap_total/1024" | bc`
+server_ip=$(ip route get 1 | sed 's/^.*src \([^ ]*\).*$/\1/;q')
+min_vession_ubuntu=15
+current_version_ubuntu=$(printf '%d' $(lsb_release -sr) 2>/dev/null)
+
+printf "=========================================================================\n"
+echo "CPU : $cpu_name"
+echo "CPU core : $cpu_cores"
+echo "Speed core : $cpu_freq MHz"
+echo "Total RAM : $server_ram_mb MB"
+echo "Total swap : $server_swap_mb MB"
+echo "Total disk : $server_hdd GB"
+echo "IP server : $server_ip"
+printf "=========================================================================\n"
+
+if [ $server_ram_total -lt $low_ram ]; then
+	echo -e "Error: RAM to low run Script \n (less 512MB) \n"
+	echo "Bye..."
+	exit
+fi
+if [ "$min_vession_ubuntu" -gt "$current_version_ubuntu" ]; then
+	echo -e "Error: Version Ubuntu to low run Script upgrade ubuntu >= 16 \n"
+	echo "Bye..."
+	exit
+fi
+sleep 2
+
 ###clear
 printf "=========================================================================\n"
 printf "Start setup... \n"
