@@ -4,7 +4,7 @@ low_ram='512144'
 apt -y install gawk bc wget lsof
 
 cpu_name=$( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo)
-cpu_cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo)
+#cpu_cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo)
 cpu_freq=$( awk -F: ' /cpu MHz/ {freq=$2} END {print freq}' /proc/cpuinfo)
 server_ram_total=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
 server_ram_mb=`echo "scale=0;$server_ram_total/1024" | bc`
