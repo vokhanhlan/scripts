@@ -42,18 +42,13 @@ printf "========================================================================
 printf "Start setup... \n"
 printf "=========================================================================\n"
 
-read -r -p "Are you sure setup ? [y/N] " response
-	case $response in
-	    [nN]|[nN])
-            echo "Bye exit setup !"
-	        exit
-	        ;;
-	    *)
-
-	        echo "run...."
-
-	        ;;
-	esac
+read -p "Are you sure setup ?" -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  echo "Bye exit setup !"
+  exit
+fi
 
 #rm -f /etc/localtime
 #ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
