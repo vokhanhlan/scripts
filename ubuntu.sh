@@ -66,15 +66,7 @@ confirm2(){
   esac
 }
 
-read -p "Are you sure setup ? (y/n)?" choice
-case "$choice" in
-  y|Y ) echo "Start ...";;
-  n|N )
-    echo "Bye exit setup !"
-    exit
-    ;;
-  * ) echo "invalid";;
-esac
+confirm rm file
 
 #rm -f /etc/localtime
 #ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
