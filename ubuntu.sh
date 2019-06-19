@@ -43,15 +43,14 @@ printf "Start setup... \n"
 printf "=========================================================================\n"
 
 confirm(){
-  read -p "Are you sure setup ? (y/n)?" choice
-  case "$choice" in
-    y|Y ) echo "Start ...";;
-    n|N )
-      echo "Bye exit setup !"
-      exit
-      ;;
-    * ) echo "invalid";;
-  esac
+  echo -n "Is this a good question (y/n)? "
+  read answer
+
+  if [ "$answer" != "${answer#[Yy]}" ] ;then
+      echo Yes
+  else
+      echo No
+  fi
 }
 
 confirm rm file
