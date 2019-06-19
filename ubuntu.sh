@@ -65,8 +65,7 @@ confirm2(){
     * ) echo "invalid";;
   esac
 }
-
-confirm rm file
+confirm2 rm file
 
 #rm -f /etc/localtime
 #ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
