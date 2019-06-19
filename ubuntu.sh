@@ -92,10 +92,7 @@ sudo ufw allow 3306/tcp
 ruby -v
 rails -v
 
-printf "Scripts Rubyra (Ruby On Rails) help setup done... \n"
-printf "=========================================================================\n"
-printf "Need support , contact https://rubyra.com/\n"
-printf "=========================================================================\n"
+printf "Scripts help setup done... \n"
 printf "Server will reboot after 3s .... \n\n"
 sleep 3
 reboot
