@@ -25,16 +25,16 @@ echo "Total disk : $server_hdd GB"
 echo "IP server : $server_ip"
 printf "=========================================================================\n"
 
-if [ $server_ram_total -lt $low_ram ]; then
-	echo -e "Error: RAM to low run Script \n (less 512MB) \n"
-	echo "Bye..."
-	exit
-fi
-if [ "$min_vession_ubuntu" -gt "$current_version_ubuntu" ]; then
-	echo -e "Error: Version Ubuntu to low run Script upgrade ubuntu >= 16 \n"
-	echo "Bye..."
-	exit
-fi
+# if [ $server_ram_total -lt $low_ram ]; then
+# 	echo -e "Error: RAM to low run Script \n (less 512MB) \n"
+# 	echo "Bye..."
+# 	exit
+# fi
+# if [ "$min_vession_ubuntu" -gt "$current_version_ubuntu" ]; then
+# 	echo -e "Error: Version Ubuntu to low run Script upgrade ubuntu >= 16 \n"
+# 	echo "Bye..."
+# 	exit
+# fi
 sleep 2
 
 ###clear
