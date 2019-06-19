@@ -42,13 +42,19 @@ printf "========================================================================
 printf "Start setup... \n"
 printf "=========================================================================\n"
 
-read -p "Are you sure setup ?" -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  echo "Bye exit setup !"
-  exit
-fi
+confirm(){
+  read -p "Are you sure setup ? (y/n)?" choice
+  case "$choice" in
+    y|Y ) echo "Start ...";;
+    n|N )
+      echo "Bye exit setup !"
+      exit
+      ;;
+    * ) echo "invalid";;
+  esac
+}
+
+confirm rm file
 
 #rm -f /etc/localtime
 #ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
