@@ -3,8 +3,6 @@
 ## ----------------------------------
 # Step #1: Define variables
 # ----------------------------------
-EDITOR=vim
-PASSWD=/etc/passwd
 RED='\033[0;41;30m'
 STD='\033[0;0;39m'
 
@@ -41,7 +39,6 @@ show_menus() {
 # invoke the two() when the user select 2 from the menu option.
 # Exit when user the user select 3 form the menu option.
 read_options(){
-  local choice
   read -p "Enter choice [ 1 - 3] " choice
   case $choice in
     1) one ;;
