@@ -1,28 +1,19 @@
 #!/bin/bash
 # -------
-# Script for install of Postgresql to be used with Alfresco
-#
-# Copyright 2013-2016 Loftux AB, Peter Löfgren
-# Distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License (CC BY-SA 3.0)
-# -------
-
-export ALFRESCODB=alfresco
-export ALFRESCOUSER=alfresco
+# https://www3.ntu.edu.sg/home/ehchua/programming/sql/PostgreSQL_GetStarted.html
 
 echo
 echo "--------------------------------------------"
 echo "This script will install PostgreSQL."
-echo "and create alfresco database and user."
 echo "You may be prompted for sudo password."
 echo "--------------------------------------------"
 echo
 
 read -e -p "Install PostgreSQL database? [y/n] " -i "n" installpg
 if [ "$installpg" = "y" ]; then
-  sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main"
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-  sudo apt-get update
-  sudo apt-get install postgresql-9.6 -y
+  apt -y install postgresql postgresql-contrib && sudo apt-get install libpq-dev -y && sudo systemctl status postgresql
+  apt install ufw
+  sudo ufw allow 5432/tcp
   echo
   echo "You will now set the default password for the postgres user."
   echo "This will open a psql terminal, enter:"
@@ -37,23 +28,27 @@ if [ "$installpg" = "y" ]; then
   echo
 fi
 
-read -e -p "Create Alfresco Database and user? [y/n] " -i "n" createdb
+read -e -p "Create Database and user? [y/n] " -i "n" createdb
 if [ "$createdb" = "y" ]; then
-  sudo -u postgres createuser -D -A -P $ALFRESCOUSER
-  sudo -u postgres createdb -O $ALFRESCOUSER $ALFRESCODB
-  echo
-  echo "Remember to update alfresco-global.properties with the alfresco database password"
-  echo
+  read -e -p "Enter the database name:" dbName
+  read -e -p "Enter the database user:" dbUser
+  sudo -u postgres createuser -D -A -P $dbUser
+  echo "Create user $dbUser success"
+  sudo -u postgres createdb -O $dbUser $dbName
+  echo "Create database $database with owner $dbUser success"
 fi
 
-echo
-echo "You must update postgresql configuration to allow password based authentication"
-echo "(if you have not already done this)."
-echo
-echo "Add the following to pg_hba.conf or postgresql.conf (depending on version of postgresql installed)"
-echo "located in folder /etc/postgresql/<version>/main/"
-echo
-echo "host all all 127.0.0.1/32 password"
-echo
-echo "After you have updated, restart the postgres server: sudo service postgresql restart"
-echo
+
+read -e -p "Add the following to pg_hba.conf or postgresql.conf [y/n] " -i "n" following
+if [ "$following" = "y" ]; then
+  fileconf=/etc/postgresql/*/main/pg_hba.conf
+  read -e -p "Enter the database name:" dbName
+  read -e -p "Enter the database user:" dbUser
+  echo "local    $dbName             $dbUser              0.0.0.0/0              md5" >> $fileconf
+  echo "local    $dbName             $dbUser              ::/0                   md5" >> $fileconf
+  echo "local    $dbName             $dbUser             127.0.0.1/32            md5" >> $fileconf
+  echo "local    $dbName             $dbUser             ::1/128                 md5" >> $fileconf
+  sudo service postgresql restart
+  echo "Config success"
+fi
+
