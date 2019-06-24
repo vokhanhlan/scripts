@@ -1,7 +1,7 @@
 #!/bin/bash
-adduser deloy
-usermod -aG sudo deloy
-rsync --archive --chown=deloy:deloy ~/.ssh /home/deloy
+adduser deploy
+usermod -aG sudo deploy
+rsync --archive --chown=deploy:deploy ~/.ssh /home/deploy
 
 
 chmod -R g+w /var/www/folder
